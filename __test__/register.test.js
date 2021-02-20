@@ -109,7 +109,7 @@ describe("POST /register", () => {
     it("should return response 400 with email unique validation error details", function (done) {
       // Setup
       const userData = {
-        email: "test-success@food-chronicles.com",
+        email: "test@food-chronicles.com",
         username: "test",
         password: "123456",
         company_name: "Company",
@@ -140,7 +140,7 @@ describe("POST /register", () => {
       // Setup
       const userData = {
         email: "test-failed@food-chronicles.com",
-        username: "testSuccess",
+        username: "testUser",
         password: "123456",
         company_name: "Company",
         category: "Distributor",
