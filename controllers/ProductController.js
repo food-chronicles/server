@@ -13,7 +13,7 @@ class Controller {
       const user = await User.findById(id);
       const products = user.history.filter((product) => {
         return (
-          product._id.includes(searchFilter) ||
+          product._id.toString().includes(searchFilter) ||
           product.name.toLowerCase().includes(searchFilter.toLowerCase())
         );
       });
