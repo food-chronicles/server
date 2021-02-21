@@ -27,17 +27,22 @@ class Controller {
     try {
       const { id } = req.params;
       const product = await Product.findById(id);
-      console.log("prod", product);
+
+      if (!product) {
+        return next({ name: "ProductNotFound" });
+      }
+
       const productDataChain = product.chain.map((block) => {
         return { timestamp: block.timestamp, data: block.data };
       });
 
-      if (!product) {
-        next({ name: "ProductNotFound" });
-      }
-
-      res.status(200).json({ name: product.name, chain: productDataChain });
+      res.status(200).json({
+        _id: product._id,
+        name: product.name,
+        chain: productDataChain,
+      });
     } catch (err) {
+      if (err.name === "CastError") return next({ name: "ProductNotFound" });
       next(err);
     }
   }
