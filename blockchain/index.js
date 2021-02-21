@@ -2,9 +2,9 @@ const SHA256 = require("crypto-js/sha256");
 const randomize = require("randomatic");
 
 class Block {
-  constructor(index, timestap, data, previousHash, key) {
+  constructor(index, timestamp, data, previousHash, key) {
     this.index = index; //show the index of this block in the chain
-    this.timestap = timestap; //show whan block is created
+    this.timestamp = timestamp; //show whan block is created
     this.key = key;
     this.data = data; //hold the information stored in the chain
     this.previousHash = previousHash; //hold the hash of the previous block
@@ -14,7 +14,7 @@ class Block {
 
   calculateHash() {
     return SHA256(
-      this.index + this.previousHash + this.timestap + this.data + this.nonce
+      this.index + this.previousHash + this.timestamp + this.data + this.nonce
     ).toString();
   }
 }

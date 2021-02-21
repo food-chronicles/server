@@ -6,6 +6,7 @@ const authentication = async (req, res, next) => {
     const decoded = checkToken(req.headers.access_token);
     const username = decoded.username;
     const user = await User.findOne({ username }).exec();
+    
     if (user) {
       req.headers.user = {
         id: user.id,
@@ -13,10 +14,10 @@ const authentication = async (req, res, next) => {
       };
       next();
     } else {
-      throw { name: "Please login / register first" };
+      next({ name: "Unauthorized" });
     }
   } catch (err) {
-    res.status(403).json({ message: "Please login / register first" });
+    next({ name: "Unauthorized" });
   }
 };
 

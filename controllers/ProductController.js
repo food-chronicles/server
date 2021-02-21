@@ -6,37 +6,44 @@ const { checkValidate } = require("../blockchain/checkValidate");
 const randomize = require("randomatic");
 
 class Controller {
-  static async get(req, res) {
+  static async get(req, res, next) {
+    const searchFilter = req.query.search ?? "";
     try {
       const { id } = req.headers.user;
       const user = await User.findById(id);
-      const { _id, username, company_name, category, history } = user;
-      res.status(200).json({
-        _id,
-        username,
-        company_name,
-        category,
-        history,
+      const products = user.history.filter((product) => {
+        return (
+          product._id.includes(searchFilter) ||
+          product.name.toLowerCase().includes(searchFilter.toLowerCase())
+        );
       });
+      res.status(200).json(products);
     } catch (err) {
-      res.status(500).json({ error: err });
+      next(err);
     }
   }
 
-  static async getOne(req, res) {
+  static async getOne(req, res, next) {
     try {
       const { id } = req.params;
       const product = await Product.findById(id);
+
       if (!product) {
-        throw { type: "Product not found" };
+        return next({ name: "ProductNotFound" });
       }
-      res.status(200).json(product);
+
+      const productDataChain = product.chain.map((block) => {
+        return { timestamp: block.timestamp, data: block.data };
+      });
+
+      res.status(200).json({
+        _id: product._id,
+        name: product.name,
+        chain: productDataChain,
+      });
     } catch (err) {
-      if (err.type) {
-        res.status(404).json({ message: "Product not found" });
-      } else {
-        res.status(500).json({ error: err });
-      }
+      if (err.name === "CastError") return next({ name: "ProductNotFound" });
+      next(err);
     }
   }
 
