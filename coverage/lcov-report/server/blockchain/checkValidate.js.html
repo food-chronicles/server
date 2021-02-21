@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">84.62% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>11/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.67% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/12</span>
+                <span class='fraction'>10/12</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,26 +89,26 @@
 <a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -117,27 +117,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const SHA256 = require("crypto-js/sha256");
 &nbsp;
-function <span class="fstat-no" title="function not covered" >checkValidate(</span>doc) {
-<span class="cstat-no" title="statement not covered" >  for (let i = <span class="cstat-no" title="statement not covered" >1;</span> i &lt; doc.chain.length; i++) {</span>
-    const currentBlock = <span class="cstat-no" title="statement not covered" >doc.chain[i];</span>
-    const previousBlock = <span class="cstat-no" title="statement not covered" >doc.chain[i - 1];</span>
-    const { index, timestap, data, previousHash, nonce } = <span class="cstat-no" title="statement not covered" >currentBlock;</span>
+function checkValidate(doc) {
+  for (let i = 1; i &lt; doc.chain.length; i++) {
+    const currentBlock = doc.chain[i];
+    const previousBlock = doc.chain[i - 1];
+    const { index, timestap, data, previousHash, nonce, key } = currentBlock;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (
       currentBlock.hash !==
       calculateHash(index, timestap, data, previousHash, nonce)
     ) {
 <span class="cstat-no" title="statement not covered" >      return false;</span>
-    } else <span class="cstat-no" title="statement not covered" >if (currentBlock.previousHash !== previousBlock.hash) {</span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (currentBlock.previousHash !== previousBlock.hash) {
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      return true;</span>
+      return true;
     }
   }
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >calculateHash(</span>index, timestap, data, previousHash, nonce) {
-<span class="cstat-no" title="statement not covered" >  return SHA256(index + previousHash + timestap + data + nonce).toString();</span>
+function calculateHash(index, timestap, data, previousHash, nonce) {
+  return SHA256(index + previousHash + timestap + data + nonce).toString();
 }
 &nbsp;
 module.exports = {
@@ -151,7 +151,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Feb 21 2021 05:34:10 GMT+0700 (Western Indonesia Time)
+                at Sun Feb 21 2021 15:12:09 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

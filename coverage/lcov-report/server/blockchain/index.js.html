@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/16</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/16</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,20 +101,25 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,22 +127,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -146,42 +152,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const SHA256 = require("crypto-js/sha256");
+const randomize = require("randomatic");
 &nbsp;
 class Block {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor(index, timestap, data, previousHash) {
-<span class="cstat-no" title="statement not covered" >    this.index = index; </span>//show the index of this block in the chain
-<span class="cstat-no" title="statement not covered" >    this.timestap = timestap; </span>//show whan block is created
-<span class="cstat-no" title="statement not covered" >    this.data = data; </span>//hold the information stored in the chain
-<span class="cstat-no" title="statement not covered" >    this.previousHash = previousHash; </span>//hold the hash of the previous block
-<span class="cstat-no" title="statement not covered" >    this.hash = this.calculateHash(); </span>//hold the block's own hash
-<span class="cstat-no" title="statement not covered" >    this.nonce = 0;</span>
+  constructor(index, timestap, data, previousHash, key) {
+    this.index = index; //show the index of this block in the chain
+    this.timestap = timestap; //show whan block is created
+    this.key = key;
+    this.data = data; //hold the information stored in the chain
+    this.previousHash = previousHash; //hold the hash of the previous block
+    this.hash = this.calculateHash(); //hold the block's own hash
+    this.nonce = 0;
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ca</span>lculateHash() {
-<span class="cstat-no" title="statement not covered" >    return SHA256(</span>
+  calculateHash() {
+    return SHA256(
       this.index + this.previousHash + this.timestap + this.data + this.nonce
     ).toString();
   }
 }
 &nbsp;
 class Blockchain {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
-<span class="cstat-no" title="statement not covered" >    this.chain = [this.createGenesis()];</span>
+  constructor() {
+    this.chain = [this.createGenesis()];
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  cr</span>eateGenesis() {
-<span class="cstat-no" title="statement not covered" >    return new Block(0, new Date(), "Genesis block", "0");</span>
+  createGenesis() {
+    return new Block(0, new Date(), "Genesis block", "0", "0");
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  la</span>testBlock() {
-<span class="cstat-no" title="statement not covered" >    return this.chain[this.chain.length - 1];</span>
+  latestBlock() {
+    return this.chain[this.chain.length - 1];
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ad</span>dBlock(newBlock) {
-<span class="cstat-no" title="statement not covered" >    newBlock.index = this.latestBlock().index + 1;</span>
-<span class="cstat-no" title="statement not covered" >    newBlock.previousHash = this.latestBlock().hash;</span>
-<span class="cstat-no" title="statement not covered" >    newBlock.hash = newBlock.calculateHash();</span>
-<span class="cstat-no" title="statement not covered" >    this.chain.push(newBlock);</span>
+  addBlock(newBlock) {
+    newBlock.index = this.latestBlock().index + 1;
+    newBlock.previousHash = this.latestBlock().hash;
+    newBlock.hash = newBlock.calculateHash();
+    newBlock.key = randomize("Aa0", 12);
+    this.chain.push(newBlock);
   }
 }
 &nbsp;
@@ -196,7 +205,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Feb 21 2021 05:34:10 GMT+0700 (Western Indonesia Time)
+                at Sun Feb 21 2021 15:12:09 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

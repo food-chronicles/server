@@ -1,4 +1,3 @@
 module.exports = {
-  preset: "@shelf/jest-mongodb",
-  watchPathIgnorePatterns: ["globalConfig"],
+  testEnvironment: "node",
 };
