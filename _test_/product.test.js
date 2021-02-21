@@ -1,9 +1,9 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("POST /product", () => {
-  let access_token;
+let access_token;
 
+describe("POST /product", () => {
   beforeAll(async (done) => {
     const mockUser = {
       username: "testUser",
