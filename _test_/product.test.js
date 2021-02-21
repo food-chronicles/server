@@ -1,41 +1,25 @@
 const request = require("supertest");
 const app = require("../app");
-const mongoose = require("mongoose");
-
-let access_token;
-beforeAll(async (done) => {
-  await mongoose.connect(
-    "mongodb://localhost:27017/product-test",
-    { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
-    () => done()
-  );
-});
-
-afterAll((done) => {
-  mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.close(() => done());
-  });
-});
 
 describe("POST /product", () => {
-  beforeAll((done) => {
+  let access_token;
+
+  beforeAll(async (done) => {
     const mockUser = {
-      email: "test-success@food100-chronicles.com",
-      username: "testSuccess100",
+      username: "testUser",
       password: "123456",
-      company_name: "Food Company",
-      category: "Producer",
-      history: [],
     };
 
     request(app)
-      .post("/register")
+      .post("/login")
       .send(mockUser)
       .end((err, res) => {
+        // console.log("beforeall", res.body);
         access_token = res.body.access_token;
         done();
       });
   });
+
   describe("success create new blockchain", () => {
     it("successfully create new blockchain should response with code 201", async (done) => {
       const mockProduct = {

@@ -3,20 +3,6 @@ const app = require("../app");
 const mongoose = require("mongoose");
 const { compare } = require("../helpers/hashPassword");
 
-beforeAll(async (done) => {
-  await mongoose.connect(
-    "mongodb://localhost:27017/user-test",
-    { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
-    () => done()
-  );
-});
-
-afterAll((done) => {
-  mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.close(() => done());
-  });
-});
-
 describe("POST /register", () => {
   describe("User register success", () => {
     it("register user successfully response with status 201", async (done) => {
@@ -65,10 +51,10 @@ describe("POST /register", () => {
   describe("User register error", () => {
     it("register user validation field error, email and username must be unique field should response with status 400", async (done) => {
       const mockUser = {
-        email: "test-success@food-chronicles.com",
-        username: "testSuccess",
+        email: "test@food-chronicles.com",
+        username: "testUser",
         password: "1234",
-        company_name: "mock company",
+        company_name: "Test Company",
         category: "Producer",
         history: [],
       };
