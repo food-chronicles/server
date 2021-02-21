@@ -8,6 +8,12 @@ module.exports = (err, req, res, next) => {
       statusCode = 401;
       errorMessage = "Please login / register first";
       break;
+
+    case "ProductNotFound":
+      statusCode = 404;
+      errorMessage = "Product not found";
+      break;
+
     default:
       console.log("name ->", err.name);
       console.log("error ->", err);

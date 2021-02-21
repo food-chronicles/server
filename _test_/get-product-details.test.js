@@ -27,7 +27,7 @@ describe("GET /product/:id", () => {
   describe("failed to get product details", () => {
     it("should return 404 not found for invalid product id", async (done) => {
       request(app)
-        .get("/product/random")
+        .get("/product/60328c3b59ede76a9801fcfd")
         .end((err, res) => {
           if (err) done(err);
 

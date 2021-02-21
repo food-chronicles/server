@@ -23,20 +23,22 @@ class Controller {
     }
   }
 
-  static async getOne(req, res) {
+  static async getOne(req, res, next) {
     try {
       const { id } = req.params;
       const product = await Product.findById(id);
+      console.log("prod", product);
+      const productDataChain = product.chain.map((block) => {
+        return { timestamp: block.timestamp, data: block.data };
+      });
+
       if (!product) {
-        throw { type: "Product not found" };
+        next({ name: "ProductNotFound" });
       }
-      res.status(200).json(product);
+
+      res.status(200).json({ name: product.name, chain: productDataChain });
     } catch (err) {
-      if (err.type) {
-        res.status(404).json({ message: "Product not found" });
-      } else {
-        res.status(500).json({ error: err });
-      }
+      next(err);
     }
   }
 
