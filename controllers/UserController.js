@@ -1,24 +1,56 @@
 const User = require("../models/user");
-const mongoose = require("mongoose");
+const { compare } = require("../helpers/hashPassword");
+const { tokenGenerate } = require("../helpers/jwt");
 
 class Controller {
   static register(req, res) {
+    const {
+      email,
+      username,
+      password,
+      company_name,
+      category,
+      history,
+    } = req.body;
     const user = new User({
-      _id: new mongoose.Types.ObjectId(),
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      company_name: req.body.company_name,
-      category: req.body.category,
-      history: req.body.history,
+      email,
+      username,
+      password,
+      company_name,
+      category,
+      history,
     });
     user
       .save()
       .then((result) => {
-        res.status(201).json(result);
+        const {
+          _id,
+          email,
+          username,
+          password,
+          company_name,
+          category,
+          history,
+        } = result;
+        const payload = {
+          _id,
+          username,
+        };
+        const access_token = tokenGenerate(payload);
+        const response = {
+          _id,
+          email,
+          username,
+          password,
+          company_name,
+          category,
+          history,
+          access_token,
+        };
+        res.status(201).json(response);
       })
       .catch((err) => {
-        res.status(500).json(err);
+        res.status(400).json(err);
       });
   }
 
@@ -27,15 +59,24 @@ class Controller {
     User.findOne({ username })
       .exec()
       .then((doc) => {
-        console.log(doc);
-        if (!doc) {
-          throw res.status(404).json({ message: "User not found" });
+        if (doc && compare(password, doc.password)) {
+          const { _id, username } = doc;
+          const payload = {
+            _id,
+            username,
+          };
+          const access_token = tokenGenerate(payload);
+          res.status(200).json({ access_token });
+        } else {
+          throw { type: "invalid username or password" };
         }
-        res.status(201).json(doc);
       })
       .catch((err) => {
-        console.log(err);
-        res.status(500).json({ error: err });
+        if (err.type) {
+          res.status(400).json({ message: "Invalid Username or Password" });
+        } else {
+          res.status(500).json({ message: "Internal Server Error" });
+        }
       });
   }
 }

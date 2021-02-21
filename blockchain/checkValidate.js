@@ -4,7 +4,7 @@ function checkValidate(doc) {
   for (let i = 1; i < doc.chain.length; i++) {
     const currentBlock = doc.chain[i];
     const previousBlock = doc.chain[i - 1];
-    const { index, timestap, data, previousHash, nonce } = currentBlock;
+    const { index, timestap, data, previousHash, nonce, key } = currentBlock;
 
     if (
       currentBlock.hash !==
