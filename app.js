@@ -1,14 +1,10 @@
 const express = require("express");
 const app = express();
 const router = require("./routers/index");
-const mongoose = require("mongoose");
 
-if (process.env.NODE_ENV !== "test") {
-  mongoose.connect("mongodb://localhost:27017/final-projectdb", {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  });
-}
+const mongodb = require("./config/mongodb");
+
+mongodb.connect();
 
 app.use(express.urlencoded({ extended: true }));
 

@@ -9,4 +9,5 @@ module.exports = {
     instance: {
       dbName: "jest",
     },
+  },
 };

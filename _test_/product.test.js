@@ -6,23 +6,25 @@ const { tokenGenerate } = require("../helpers/jwt");
 const { createUser } = require("../helpers/createUser");
 
 describe("POST /product", () => {
-  describe("success create new blockchain", () => {
-    let access_token;
-    beforeAll((done) => {
-      const mockUser = {
-        username: "testSuccess",
-        password: "123456",
-      };
+  let access_token;
 
-      request(app)
-        .post("/login")
-        .send(mockUser)
-        .end((err, res) => {
-          console.log(res.body);
-          access_token = res.body.access_token;
-          done();
-        });
-    });
+  beforeAll(async (done) => {
+    const mockUser = {
+      username: "testUser",
+      password: "123456",
+    };
+
+    request(app)
+      .post("/login")
+      .send(mockUser)
+      .end((err, res) => {
+        // console.log("beforeall", res.body);
+        access_token = res.body.access_token;
+        done();
+      });
+  });
+
+  describe("success create new blockchain", () => {
     it("successfully create new blockchain should response with code 201", async (done) => {
       const mockProduct = {
         amount: 5,
@@ -35,7 +37,7 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          console.log(access_token);
+          // console.log("post", res.body);
           expect(res.statusCode).toEqual(201);
           expect(res.body).toHaveProperty("_id");
           expect(typeof res.body._id).toEqual("string");
