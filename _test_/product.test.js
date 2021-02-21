@@ -1,9 +1,5 @@
 const request = require("supertest");
 const app = require("../app");
-const mongoose = require("mongoose");
-const User = require("../models/user");
-const { tokenGenerate } = require("../helpers/jwt");
-const { createUser } = require("../helpers/createUser");
 
 describe("POST /product", () => {
   let access_token;

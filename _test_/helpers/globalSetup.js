@@ -28,7 +28,10 @@ module.exports = async () => {
     password: bcrypt.hashSync("123456", bcrypt.genSaltSync(10)),
     company_name: "Test Company",
     category: "Producer",
-    history: [],
+    history: [
+      { _id: "602c5b7467c504683aa66004", name: "Chicken" },
+      { _id: "602c5a5c67c504683aa66003", name: "For Search" },
+    ],
   };
 
   await users.insertOne(user);
