@@ -4,6 +4,10 @@ module.exports = (err, req, res, next) => {
   let errorMessage = "Server Error";
 
   switch (err.name) {
+    case "Unauthorized":
+      statusCode = 401;
+      errorMessage = "Please login / register first";
+      break;
     default:
       console.log("name ->", err.name);
       console.log("error ->", err);

@@ -6,20 +6,20 @@ const { checkValidate } = require("../blockchain/checkValidate");
 const randomize = require("randomatic");
 
 class Controller {
-  static async get(req, res) {
+  static async get(req, res, next) {
+    const searchFilter = req.query.search ?? "";
     try {
       const { id } = req.headers.user;
       const user = await User.findById(id);
-      const { _id, username, company_name, category, history } = user;
-      res.status(200).json({
-        _id,
-        username,
-        company_name,
-        category,
-        history,
+      const products = user.history.filter((product) => {
+        return (
+          product._id.includes(searchFilter) ||
+          product.name.toLowerCase().includes(searchFilter.toLowerCase())
+        );
       });
+      res.status(200).json(products);
     } catch (err) {
-      res.status(500).json({ error: err });
+      next(err);
     }
   }
 
