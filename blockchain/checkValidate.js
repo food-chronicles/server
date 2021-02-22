@@ -4,11 +4,11 @@ function checkValidate(doc) {
   for (let i = 1; i < doc.chain.length; i++) {
     const currentBlock = doc.chain[i];
     const previousBlock = doc.chain[i - 1];
-    const { index, timestap, data, previousHash, nonce, key } = currentBlock;
+    const { index, timestamp, data, previousHash, nonce, key } = currentBlock;
 
     if (
       currentBlock.hash !==
-      calculateHash(index, timestap, data, previousHash, nonce)
+      calculateHash(index, timestamp, data, previousHash, nonce)
     ) {
       return false;
     } else if (currentBlock.previousHash !== previousBlock.hash) {
@@ -19,8 +19,8 @@ function checkValidate(doc) {
   }
 }
 
-function calculateHash(index, timestap, data, previousHash, nonce) {
-  return SHA256(index + previousHash + timestap + data + nonce).toString();
+function calculateHash(index, timestamp, data, previousHash, nonce) {
+  return SHA256(index + previousHash + timestamp + data + nonce).toString();
 }
 
 module.exports = {

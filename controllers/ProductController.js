@@ -36,21 +36,21 @@ class Controller {
         return { timestamp: block.timestamp, data: block.data };
       });
 
-      res.status(200).json({
+      return res.status(200).json({
         _id: product._id,
         name: product.name,
         chain: productDataChain,
       });
     } catch (err) {
       if (err.name === "CastError") return next({ name: "ProductNotFound" });
-      next(err);
+      return next(err);
     }
   }
 
-  static async createBlockchain(req, res) {
+  static async createBlockchain(req, res, next) {
     try {
       if (Object.keys(req.body.data).length === 0 && req.body.name) {
-        throw { message: "data must not empty" };
+        return next({ name: "ProductDataValidationError" });
       }
       let blockchain = new Blockchain();
       const { id } = req.headers.user;
@@ -69,16 +69,15 @@ class Controller {
       res.status(201).json(product);
     } catch (error) {
       if (Object.keys(req.body.data).length === 0 && !req.body.name) {
-        res.status(403).json({ message: "data and name must not empty" });
+        return next({ name: "ProductValidationError" });
       } else {
-        res.status(403).json(error);
+        return next(error);
       }
     }
   }
 
   static async addBlock(req, res) {
     try {
-      console.log(req.body);
       if (Object.keys(req.body).length === 0) {
         throw { type: "data must not empty" };
       }

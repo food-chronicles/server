@@ -5,12 +5,12 @@ const authorization = async (req, res, next) => {
     const { id } = req.params;
     const product = await Product.findById(id);
     if (!product) {
-      throw { type: "Product not found" };
+      return next({ name: "ProductNotFound" });
     }
     const latestBlockKey = product.chain[product.chain.length - 1].key;
     const { qr, key } = req.headers;
     if (key === latestBlockKey) {
-      console.log("test <<<<");
+      // console.log("test <<<<");
       next();
     } else {
       throw { type: "QR code and key is not match" };
