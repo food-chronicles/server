@@ -61,15 +61,11 @@ class Controller {
           const access_token = tokenGenerate(payload);
           res.status(200).json({ access_token });
         } else {
-          throw { type: "invalid username or password" };
+          return next({ name: "InvalidLogin" });
         }
       })
       .catch((err) => {
-        if (err.type) {
-          res.status(400).json({ message: "Invalid Username or Password" });
-        } else {
-          res.status(500).json({ message: "Internal Server Error" });
-        }
+        return next(err);
       });
   }
 }

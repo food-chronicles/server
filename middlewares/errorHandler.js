@@ -4,6 +4,11 @@ module.exports = (err, req, res, next) => {
   let errorObj = { message: "Server Error" };
 
   switch (err.name) {
+    case "InvalidLogin":
+      statusCode = 400;
+      errorObj.message = "Invalid Username or Password";
+      break;
+
     case "Unauthorized":
       statusCode = 401;
       errorObj.message = "Please login / register first";
