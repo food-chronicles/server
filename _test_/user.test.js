@@ -12,7 +12,6 @@ describe("POST /register", () => {
         password: "123456",
         company_name: "Food Company",
         category: "Producer",
-        history: [],
       };
 
       request(app)
