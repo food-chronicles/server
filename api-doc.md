@@ -2,15 +2,15 @@
 
 ## RESTful endpoints
 
-### POST /products
+### POST /product
 
-> Post new products
+> Post new product
 
 _Request Header_
 
 ```
 {
-    "access_token": "<your access token>"
+  "access_token": "<your access token>"
 }
 ```
 
@@ -18,10 +18,15 @@ _Request Body_
 
 ```
 {
-    "name": "<name to get insert into>",
-    "stock": "<stock to get insert into>",
-    "price": "<price to get insert into>",
-    "image_url": "<url image>"
+  "name": "<Product Name>",
+  "location": {
+    "latitude": "<Block Latitude coordinate>",
+    "longitude": "<Block Longitude coordinate"
+  },
+  "data": {
+      <Block data_key>: <Block data_field>
+  },
+  "image_url": "<Block image_url>"
 }
 ```
 
@@ -29,10 +34,47 @@ _Response (201)_
 
 ```
 {
-    "name": "<name product>",
-    "stock": "<stock product>",
-    "price": "<price product>",
-    "image_url": "<url image>"
+  "chain": [
+    {
+      "index": 0,
+      "timestamp": "<Time Blockchain created>",
+      "location": "0",
+      "image_url": "Genesis block",
+      "user": "Genesis block",
+      "data": "Genesis block",
+      "previousHash": "0",
+      "hash": "<Hash Genesis Blockchain>",
+      "nonce": 0
+    },
+    {
+      "index": 1,
+      "timestamp": "<Time Blockchain created>",
+      "key": "<Block unique key>",
+      "location": {
+        "latitude": "<Block Latitude coordinate>",
+        "longitude": "<Block Longitude coordinate",
+        "city": "<Block City>",
+        "region": "<Block Region>",
+        "country": "<Block Country>"
+      },
+      "image_url": "<Block Image_url>",
+      "user": {
+        "id": "<User Id that created the Block>",
+        "username": "<User Username that created the Block>",
+        "company_name": "<User Company Name that created the Block>",
+        "category": "<User Category that created the Block>"
+      },
+      "data": {
+          <Block data_key>: <Block data_field>
+      },
+      "previousHash": "<Previous Block Hash>",
+      "hash": "<This Block Hash>",
+      "nonce": 0
+    }
+  ],
+  "_id": "<Product Id>",
+  "name": "<Product Name>",
+  "__v": 0
 }
 ```
 
@@ -40,7 +82,7 @@ _Response (400)_
 
 ```
 {
-    "message": "validation error"
+  "message": "<Validation Error message>"
 }
 ```
 
@@ -48,13 +90,13 @@ _Response (500)_
 
 ```
 {
-    "message": "Internal Server Error"
+  "message": "<Error message>"
 }
 ```
 
-### GET /products
+### GET /product
 
-> Get all products
+> Get all product
 
 _Request Header_
 
@@ -75,12 +117,13 @@ _Response (200)_
 ```
 [
     {
-        "id": "<id product>"
-        "name": "<name product>",
-        "stock": "<stock product>",
-        "price": "<price product>",
-        "image_url": "<url image product>"
-    }
+        "_id": "<Product Id that of has the Block you created>",
+        "name": ""<Product Name that of has the Block you created>"
+    },
+    {
+        "_id": "<Product Id that of has the Block you created>",
+        "name": "<Product Name that of has the Block you created>"
+    },
 ]
 ```
 
@@ -88,11 +131,11 @@ _Response (500)_
 
 ```
 {
-    "message": "Internal Server Error"
+    "message": "<Error message>"
 }
 ```
 
-### GET /products/:id
+### GET /product/:id
 
 > Get product by id
 
@@ -122,11 +165,46 @@ _Response (200)_
 
 ```
 {
-    "id": "<id product>"
-    "name": "<name product>",
-    "stock": "<stock product>",
-    "price": "<price product>",
-    "image_url": "<url image product>"
+  "_id": "<Product Id>",
+  "name": "<Product Name>",
+  "chain": [
+    {
+      "index": 0,
+      "timestamp": "<Time Blockchain created>",
+      "location": "0",
+      "image_url": "Genesis block",
+      "user": "Genesis block",
+      "data": "Genesis block",
+      "previousHash": "0",
+      "hash": "<Hash Genesis Blockchain>",
+      "nonce": 0
+    },
+    {
+      "index": 1,
+      "timestamp": "<Time Blockchain created>",
+      "key": "<Block unique key>",
+      "location": {
+        "latitude": "<Block Latitude coordinate>",
+        "longitude": "<Block Longitude coordinate",
+        "city": "<Block City>",
+        "region": "<Block Region>",
+        "country": "<Block Country>"
+      },
+      "image_url": "<Block Image_url>",
+      "user": {
+        "id": "<User Id that created the Block>",
+        "username": "<User Username that created the Block>",
+        "company_name": "<User Company Name that created the Block>",
+        "category": "<User Category that created the Block>"
+      },
+      "data": {
+          <data_key>: <data_field>
+      },
+      "previousHash": "<Previous Block Hash>",
+      "hash": "<This Block Hash>",
+      "nonce": 0
+    }
+  ],
 }
 ```
 
@@ -134,11 +212,11 @@ _Response (404)_
 
 ```
 {
-    "message": "error not found"
+    "message": "<Product Not Found>"
 }
 ```
 
-### PUT /products/:id
+### PUT /product/:id
 
 > Update product by id
 
@@ -146,74 +224,8 @@ _Request Header_
 
 ```
 {
-    "access_token": "<your access token>"
-}
-```
-
-_Request Query_
-
-```
-{
-    "category": "<name of category inputed by user>"
-}
-```
-
-_Request Body_
-
-```
-{
-    "name": "<name updated>",
-    "stock": "<stock updated>",
-    "price": "<price updated>",
-    "image_url": "<url image updated>"
-}
-```
-
-_Response (200)_
-
-```
-{
-    "id": "<id product>"
-    "name": "<name product>",
-    "stock": "<stock product>",
-    "price": "<price product>",
-    "image_url": "<url image product>"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-_Response (500)_
-
-```
-{
-    "message": "Internal server error"
-}
-```
-
-### PATCH /products/:id
-
-> Update stock products by id
-
-_Request Header_
-
-```
-{
     "access_token": "<your access token>",
-}
-```
-
-_Request Query_
-
-```
-{
-    "category": "<name of category inputed by user>"
+    "key": "<Unique key of the previous Block>"
 }
 ```
 
@@ -221,7 +233,14 @@ _Request Body_
 
 ```
 {
-    "stock": "<stock product>"
+  "location": {
+    "latitude": "<Block Latitude coordinate>",
+    "longitude": "<Block Longitude coordinate"
+  },
+  "data": {
+      <Block data_key>: <Block data_field>
+  },
+  "image_url": "<Block image_url>"
 }
 ```
 
@@ -229,11 +248,7 @@ _Response (200)_
 
 ```
 {
-    "id": "<id product>"
-    "name": "<name product>",
-    "stock": "<stock product>",
-    "price": "<price product>",
-    "image_url": "<url image product>"
+  "message": "1 doc has been updated"
 }
 ```
 
@@ -241,7 +256,7 @@ _Response (400)_
 
 ```
 {
-    "message": "error validation"
+  "message": "<Validation Error message>"
 }
 ```
 
@@ -249,7 +264,7 @@ _Response (404)_
 
 ```
 {
-    "message": "error not found"
+  "message": "Product not found"
 }
 ```
 
@@ -257,79 +272,23 @@ _Response (500)_
 
 ```
 {
-    "message": "Internal server error"
+  "message": "<Error message>"
 }
 ```
 
-### DELETE /products/:id
-
-> Delete product by id
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>"
-}
-```
-
-_Request Params_
-
-```
-{
-    "id": <product id>
-}
-```
-
-_Request Body_
-
-```
-not needed
-```
-
-_Response (200)_
-
-```
-{
-    "message": "product success to delete"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-_Response (500)_
-
-```
-{
-    "message": "Internal server error"
-}
-```
-
-### POST users/register
+### POST /register
 
 > Post new User
 
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>"
-}
-```
-
 _Request Body_
 
 ```
 {
-    "email": "<email to post to User>",
-    "password": "<password to post to User>"
-    "role": "<role to post to User>"
+  "email": "<User Email>",
+  "username": "<User Username>",
+  "password": "<User Password>",
+  "company_name": "<User Company Name>",
+  "category": "<User Category>"
 }
 ```
 
@@ -337,9 +296,14 @@ _Response (201)_
 
 ```
 {
-    "id": <given by the system>,
-    "email": "<User email>"
-    "role": "<User role>"
+  "_id": "<User ID>",
+  "email": "<User Email>",
+  "username": "<User Username>",
+  "password": "<User Hash Password>",
+  "company_name": "<User Company Name>",
+  "category": "<User Category>"
+  "history": [],
+  "access_token": "<access_token>"
 }
 ```
 
@@ -347,11 +311,11 @@ _Response (400)_
 
 ```
 {
-    errors
+  "message": "<Validation Error message>"
 }
 ```
 
-### POST /users/login
+### POST /login
 
 > Post User login
 
@@ -359,8 +323,8 @@ _Request Body_
 
 ```
 {
-    "email": "<User email>",
-    "password": "<User password>"
+  "email": "<User email>",
+  "password": "<User password>"
 }
 ```
 
@@ -368,7 +332,7 @@ _Response (200)_
 
 ```
 {
-    "accessToken": "<generated by system>"
+  "accessToken": "<generated by system>"
 }
 ```
 
@@ -376,59 +340,19 @@ _Response (400)_
 
 ```
 {
-    error
+  "message": "<Validation Error message>"
 }
 ```
 
-### POST /customers/register
+### GET /user
 
-> Post new User Customers
+> Get User
 
 _Request Header_
 
 ```
 {
-    "access_token": "<your access token>"
-}
-```
-
-_Request Body_
-
-```
-{
-    "email": "<email to post to User>",
-    "password": "<password to post to User>"
-}
-```
-
-_Response (201)_
-
-```
-{
-    "id": <given by the system>,
-    "email": "<User email>"
-    "role": "customer"
-}
-```
-
-_Response (400)_
-
-```
-{
-    errors
-}
-```
-
-### POST /customers/login
-
-> Post User login Customer
-
-_Request Body_
-
-```
-{
-    "email": "<User email>",
-    "password": "<User password>"
+  "access_token": "<your access token>"
 }
 ```
 
@@ -436,555 +360,19 @@ _Response (200)_
 
 ```
 {
-    "accessToken": "<generated by system>"
+  "_id": "<User Id>"
+  "email": "<User Email>",
+  "username": "<User Username>",
+  "password": "<User Password>",
+  "company_name": "<User Company Name>",
+  "category": "<User Category>"
 }
 ```
 
-_Response (400)_
+_Response (401)_
 
 ```
 {
-    error
-}
-```
-
-### GET /customers
-
-> Get all Product List
-
-_Request Header_
-
-```
-not needed
-```
-
-_Request Body_
-
-```
-not needed
-```
-
-_Response (200)_
-
-```
-[
-    {
-        "id": "<id product>"
-        "name": "<name product>",
-        "stock": "<stock product>",
-        "price": "<price product>",
-        "image_url": "<url image product>"
-    }
-]
-```
-
-```
-_Response (500)_
-```
-
-### POST /customers
-
-> Post new cart
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>"
-}
-```
-
-_Request Body_
-
-```
-{
-    ProductId: "<id of the product that will be buy>",
-    quantity: 1
-}
-```
-
-_Response (201)_
-
-```
-[
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    },
-    boolean =>
-    true (if the there is not created yet) /
-    false (if there were already created and instead will increment the quantity of the product)
-]
-```
-
-_Response (400)_
-
-```
-{
-    "message": "validation error"
-}
-```
-
-_Response (500)_
-
-```
-{
-    "message": "Internal Server Error"
-}
-```
-
-### PATCH /customers/:id
-
-> Update status carts by id
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>",
-}
-```
-
-_Request Params_
-
-```
-{
-    "id": "<id of the Cart>"
-}
-```
-
-_Request Body_
-
-```
-{
-    "status": "<status that will updated>"
-}
-```
-
-_Response (200)_
-
-```
-{
-    "id": "<id product>"
-    "name": "<name product>",
-    "stock": "<stock product>",
-    "price": "<price product>",
-    "image_url": "<url image product>"
-}
-```
-
-_Response (400)_
-
-```
-{
-    "message": "error validation"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-_Response (500)_
-
-```
-{
-    "message": "Internal server error"
-}
-```
-
-### GET /customers/carts
-
-> Get all Cart Products
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>",
-}
-```
-
-_Request Body_
-
-```
-not needed
-```
-
-_Response (200)_
-
-```
-[
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    },
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    },
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    },
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    },
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    }
-]
-```
-
-```
-_Response (500)_
-```
-
-### GET /customers/products/:id
-
-> Get product by id
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>"
-}
-```
-
-_Request Params_
-
-```
-{
-    "id": <product id>
-}
-```
-
-_Request Body_
-
-```
-not needed
-```
-
-_Response (200)_
-
-```
-{
-    "id": "<id product>"
-    "name": "<name product>",
-    "stock": "<stock product>",
-    "price": "<price product>",
-    "image_url": "<url image product>"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-### GET /customers/carts/:id
-
-> Get Cart Product by id
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>"
-}
-```
-
-_Request Params_
-
-```
-{
-    "id": <Cart Product id>
-}
-```
-
-_Request Body_
-
-```
-not needed
-```
-
-_Response (200)_
-
-```
-{
-    "id": "<id Cart Product>"
-    "name": "<name Cart Product>",
-    "stock": "<stock Cart Product>",
-    "price": "<price Cart Product>",
-    "image_url": "<url image Cart Product>"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-### PATCH /customers/carts/:id
-
-> Update quantity Cart Product by id
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>",
-}
-```
-
-_Request Params_
-
-```
-{
-    "id": "<id of the Cart Product>"
-}
-```
-
-_Request Body_
-
-```
-{
-    "quantity": "<quantity that will updated>"
-}
-```
-
-_Response (200)_
-
-```
-    {
-        "id": <id of the Cart Product>,
-        "CartId": <id of the Cart>,
-        "ProductId": <id of the Product>,
-        "quantity": <updated quantity of the product>,
-        "createdAt": "2021-01-28T03:23:18.412Z",
-        "updatedAt": "2021-01-28T03:23:18.412Z",
-        "Product": {
-            "id": <id of the Product>,
-            "name": "<name of the Product>",
-            "stock": <stock of the Product>,
-            "price": <price of the Product>,
-            "image_url": "<image url of the Product>",
-            "createdAt": "2021-01-26T11:19:44.889Z",
-            "updatedAt": "2021-01-26T11:19:44.889Z"
-        },
-        "Cart": {
-            "id": <id of the Cart>,
-            "UserId": <id of the User (Customer)>,
-            "status": <status of the Cart>,
-            "createdAt": "2021-01-26T12:33:28.325Z",
-            "updatedAt": "2021-01-26T12:33:28.325Z"
-        }
-    }
-```
-
-_Response (400)_
-
-```
-{
-    "message": "error validation"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-_Response (500)_
-
-```
-{
-    "message": "Internal server error"
-}
-```
-
-### DELETE /products/:id
-
-> Delete Cart Product by id
-
-_Request Header_
-
-```
-{
-    "access_token": "<your access token>"
-}
-```
-
-_Request Params_
-
-```
-{
-    "id": <Cart Product id>
-}
-```
-
-_Request Body_
-
-```
-not needed
-```
-
-_Response (200)_
-
-```
-{
-    "message": "Cart Product has been deleted"
-}
-```
-
-_Response (404)_
-
-```
-{
-    "message": "error not found"
-}
-```
-
-_Response (500)_
-
-```
-{
-    "message": "Internal server error"
+  "message": "Please login / register first"
 }
 ```
