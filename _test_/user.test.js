@@ -7,8 +7,8 @@ describe("POST /register", () => {
   describe("User register success", () => {
     it("register user successfully response with status 201", async (done) => {
       const mockUser = {
-        email: "test-success@food-chronicles.com",
-        username: "testSuccess",
+        email: "test-success-register@food-chronicles.com",
+        username: "testSuccess-register",
         password: "123456",
         company_name: "Food Company",
         category: "Producer",
@@ -151,7 +151,7 @@ describe("POST /login", () => {
   describe("User login success", () => {
     it("login user successfully response with status 200", async (done) => {
       const mockUser = {
-        username: "testSuccess",
+        username: "testSuccess-register",
         password: "123456",
       };
 
