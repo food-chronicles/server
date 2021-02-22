@@ -4,10 +4,13 @@ const { Schema } = mongoose;
 const productSchema = new Schema({
   name: {
     type: String,
-    require: true,
-    minlength: 4,
+    required: "name is required",
+    minlength: [4, "name is min 4 character"],
   },
-  chain: Array,
+  chain: {
+    type: Array,
+    required: "chain is required",
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);

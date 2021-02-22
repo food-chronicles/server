@@ -64,8 +64,6 @@ describe("POST /register", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          // console.log(res.body);
-          // expect(res).toBeInstanceOf(mongoose.Error.ValidationError);
           expect(res.statusCode).toEqual(400);
           expect(res.body.errors).toHaveProperty("email");
           expect(res.body.errors.email.kind).toEqual("unique");
@@ -74,7 +72,7 @@ describe("POST /register", () => {
           expect(res.body.errors.username.kind).toEqual("unique");
           expect(res.body.errors.username.path).toEqual("username");
           expect(res.body.name).toEqual("ValidationError");
-          expect(res.body.message).toContain("unique");
+          expect(res.body.message).toContain("already taken");
 
           done();
         });
@@ -170,7 +168,6 @@ describe("POST /login", () => {
           expect(res.statusCode).toEqual(200);
           expect(res.body).toHaveProperty("access_token");
           expect(typeof res.body.access_token).toEqual("string");
-          // console.log(res.body.access_token);
 
           done();
         });

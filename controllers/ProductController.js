@@ -6,42 +6,52 @@ const { checkValidate } = require("../blockchain/checkValidate");
 const randomize = require("randomatic");
 
 class Controller {
-  static async get(req, res) {
+  static async get(req, res, next) {
+    const searchFilter = req.query.search ?? "";
     try {
       const { id } = req.headers.user;
       const user = await User.findById(id);
-      const { _id, username, company_name, category, history } = user;
-      res.status(200).json({
-        _id,
-        username,
-        company_name,
-        category,
-        history,
+      const products = user.history.filter((product) => {
+        return (
+          product._id.toString().includes(searchFilter) ||
+          product.name.toLowerCase().includes(searchFilter.toLowerCase())
+        );
       });
+      res.status(200).json(products);
     } catch (err) {
-      res.status(500).json({ error: err });
+      next(err);
     }
   }
 
-  static async getOne(req, res) {
+  static async getOne(req, res, next) {
     try {
       const { id } = req.params;
       const product = await Product.findById(id);
+
       if (!product) {
-        throw { type: "Product not found" };
+        return next({ name: "ProductNotFound" });
       }
-      res.status(200).json(product);
+
+      const productDataChain = product.chain.map((block) => {
+        return { timestamp: block.timestamp, data: block.data };
+      });
+
+      res.status(200).json({
+        _id: product._id,
+        name: product.name,
+        chain: productDataChain,
+      });
     } catch (err) {
-      if (err.type) {
-        res.status(404).json({ message: "Product not found" });
-      } else {
-        res.status(500).json({ error: err });
-      }
+      if (err.name === "CastError") return next({ name: "ProductNotFound" });
+      next(err);
     }
   }
 
   static async createBlockchain(req, res) {
     try {
+      if (Object.keys(req.body.data).length === 0 && req.body.name) {
+        throw { message: "data must not empty" };
+      }
       let blockchain = new Blockchain();
       const { id } = req.headers.user;
       await blockchain.addBlock(new Block(1, new Date(), req.body.data));
@@ -58,12 +68,20 @@ class Controller {
       );
       res.status(201).json(product);
     } catch (error) {
-      res.status(500).json(error);
+      if (Object.keys(req.body.data).length === 0 && !req.body.name) {
+        res.status(403).json({ message: "data and name must not empty" });
+      } else {
+        res.status(403).json(error);
+      }
     }
   }
 
   static async addBlock(req, res) {
     try {
+      console.log(req.body);
+      if (Object.keys(req.body).length === 0) {
+        throw { type: "data must not empty" };
+      }
       const { id } = req.params;
       const doc = await Product.findById(id);
       if (doc) {
@@ -83,11 +101,15 @@ class Controller {
             .exec();
           res.status(200).json({ message: `${result.n} doc has been updated` });
         } else {
-          throw { message: `You data has been compromised or altered` };
+          throw { type: `You data has been compromised or altered` };
         }
       }
     } catch (err) {
-      res.status(500).json({ error: err });
+      if (err.type) {
+        res.status(403).json({ message: err.type });
+      } else {
+        res.status(500).json({ error: err });
+      }
     }
   }
 }
