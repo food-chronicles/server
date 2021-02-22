@@ -12,7 +12,6 @@ describe("POST /register", () => {
         password: "123456",
         company_name: "Food Company",
         category: "Producer",
-        history: [],
       };
 
       request(app)
@@ -56,7 +55,6 @@ describe("POST /register", () => {
         password: "1234",
         company_name: "Test Company",
         category: "Producer",
-        history: [],
       };
       request(app)
         .post("/register")
@@ -85,7 +83,6 @@ describe("POST /register", () => {
         password: "",
         company_name: "",
         category: "",
-        history: [],
       };
 
       request(app)
@@ -124,7 +121,6 @@ describe("POST /register", () => {
         password: "1234",
         company_name: "mock company",
         category: "Not one of the choice",
-        history: [],
       };
 
       request(app)
@@ -189,6 +185,85 @@ describe("POST /login", () => {
           expect(res.statusCode).toEqual(400);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("Invalid Username or Password");
+
+          done();
+        });
+    });
+  });
+});
+
+describe("GET /user", () => {
+  describe("Get user info success", () => {
+    let access_token;
+
+    beforeAll(async (done) => {
+      const mockUser = {
+        username: "testUser",
+        password: "123456",
+      };
+
+      request(app)
+        .post("/login")
+        .send(mockUser)
+        .end((err, res) => {
+          if (err) done(err);
+          access_token = res.body.access_token;
+          done();
+        });
+    });
+
+    it("should successfully get user info with status 200", async (done) => {
+      request(app)
+        .get("/user")
+        .set("access_token", access_token)
+        .end((err, res) => {
+          if (err) done(err);
+
+          expect(res.statusCode).toEqual(200);
+          expect(typeof res.body).toEqual("object");
+          expect(res.body).toHaveProperty("email");
+          expect(typeof res.body.email).toEqual("string");
+          expect(res.body).toHaveProperty("username");
+          expect(typeof res.body.username).toEqual("string");
+          expect(res.body).toHaveProperty("company_name");
+          expect(typeof res.body.company_name).toEqual("string");
+          expect(res.body).toHaveProperty("category");
+          expect(typeof res.body.category).toEqual("string");
+
+          done();
+        });
+    });
+  });
+
+  describe("Get user info failed", () => {
+    it("should failed to get user info when not providing access_token", async (done) => {
+      request(app)
+        .get("/user")
+        .end((err, res) => {
+          if (err) done(err);
+
+          expect(res.statusCode).toEqual(401);
+          expect(typeof res.body).toEqual("object");
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toEqual("Please login / register first");
+          expect(typeof res.body.message).toEqual("string");
+
+          done();
+        });
+    });
+
+    it("should failed to get user info when providing invalid access_token", async (done) => {
+      request(app)
+        .get("/user")
+        .set("access_token", "not access token")
+        .end((err, res) => {
+          if (err) done(err);
+
+          expect(res.statusCode).toEqual(401);
+          expect(typeof res.body).toEqual("object");
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toEqual("Please login / register first");
+          expect(typeof res.body.message).toEqual("string");
 
           done();
         });
