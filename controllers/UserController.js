@@ -68,6 +68,23 @@ class Controller {
         return next(err);
       });
   }
+
+  static async getUserInfo(req, res, next) {
+    try {
+      const { id } = req.headers.user;
+      const {
+        _id,
+        email,
+        username,
+        company_name,
+        category,
+      } = await User.findById(id);
+
+      res.status(200).json({ _id, email, username, company_name, category });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = Controller;
