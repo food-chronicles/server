@@ -18,7 +18,7 @@ class Controller {
       password,
       company_name,
       category,
-      history,
+      history: [],
     });
     user
       .save()

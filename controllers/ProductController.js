@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const getLocation = require("../helpers/getLocation");
 const { Blockchain, Block, checkValid } = require("../blockchain/index");
 const { checkValidate } = require("../blockchain/checkValidate");
 const randomize = require("randomatic");
@@ -33,7 +34,12 @@ class Controller {
       }
 
       const productDataChain = product.chain.map((block) => {
-        return { timestamp: block.timestamp, data: block.data };
+        return {
+          timestamp: block.timestamp,
+          data: block.data,
+          location: block.location,
+          image_url: block.image_url,
+        };
       });
 
       return res.status(200).json({
@@ -54,13 +60,15 @@ class Controller {
       }
       let blockchain = new Blockchain();
       const { id } = req.headers.user;
+      const location = await getLocation(req.body.location);
       await blockchain.addBlock(
         new Block(
           1,
           new Date(),
           req.body.data,
-          req.body.location,
-          req.body.image_url
+          location,
+          req.body.image_url,
+          req.headers.user
         )
       );
 
@@ -95,12 +103,14 @@ class Controller {
         const status = checkValidate(doc);
         if (status) {
           const latestBlock = doc.chain[doc.chain.length - 1];
+          const location = await getLocation(req.body.location);
           const newBlock = new Block(
             latestBlock.index + 1,
             new Date(),
             req.body.data,
-            req.body.location,
+            location,
             req.body.image_url,
+            req.headers.user,
             latestBlock.hash,
             randomize("Aa0", 12)
           );

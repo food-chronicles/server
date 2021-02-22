@@ -12,6 +12,7 @@ function checkValidate(doc) {
       nonce,
       location,
       image_url,
+      user,
     } = currentBlock;
 
     if (
@@ -23,7 +24,8 @@ function checkValidate(doc) {
         previousHash,
         nonce,
         location,
-        image_url
+        image_url,
+        user
       )
     ) {
       return false;
@@ -42,10 +44,18 @@ function calculateHash(
   previousHash,
   nonce,
   location,
-  image_url
+  image_url,
+  user
 ) {
   return SHA256(
-    index + previousHash + timestamp + data + nonce + location + image_url
+    index +
+      previousHash +
+      timestamp +
+      data +
+      nonce +
+      location +
+      image_url +
+      user
   ).toString();
 }
 
