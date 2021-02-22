@@ -1,9 +1,10 @@
 const axios = require("axios");
 
 const getLocation = (place) => {
+  let GEO_API = process.env.GEO_API;
   return axios({
     method: "get",
-    url: `http://api.positionstack.com/v1/reverse?access_key=a7d78e98c50102c451de640844e26f3a&query=${place.latitude},${place.longitude}`,
+    url: `http://api.positionstack.com/v1/reverse?access_key=${GEO_API}&query=${place.latitude},${place.longitude}`,
   })
     .then((res) => {
       const location = {
