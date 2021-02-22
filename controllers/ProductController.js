@@ -91,7 +91,7 @@ class Controller {
           const newBlock = new Block(
             latestBlock.index + 1,
             new Date(),
-            req.body,
+            req.body.data,
             latestBlock.hash,
             randomize("Aa0", 12)
           );
