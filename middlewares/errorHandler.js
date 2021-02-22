@@ -1,22 +1,38 @@
 module.exports = (err, req, res, next) => {
   if (!err) next();
   let statusCode = 500;
-  let errorMessage = "Server Error";
+  let errorObj = { message: "Server Error" };
 
   switch (err.name) {
     case "Unauthorized":
       statusCode = 401;
-      errorMessage = "Please login / register first";
+      errorObj.message = "Please login / register first";
       break;
 
     case "ProductNotFound":
       statusCode = 404;
-      errorMessage = "Product not found";
+      errorObj.message = "Product not found";
+      break;
+
+    case "ProductValidationError":
+      statusCode = 400;
+      errorObj.message = "data and name must not empty";
+      break;
+
+    case "ProductDataValidationError":
+      statusCode = 400;
+      errorObj.message = "data must not empty";
+      break;
+
+    case "ValidationError":
+      statusCode = 400;
+      errorObj.message = err.message;
+      errorObj.errors = err.errors;
       break;
 
     default:
       console.log("name ->", err.name);
       console.log("error ->", err);
   }
-  res.status(statusCode).json({ message: errorMessage });
+  res.status(statusCode).json(errorObj);
 };

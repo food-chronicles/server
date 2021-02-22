@@ -56,7 +56,7 @@ describe("POST /product", () => {
   });
 
   describe("error create new blockchain", () => {
-    it("name field is empty should response with code 403 ", async (done) => {
+    it("name field is empty should response with code 400", async (done) => {
       const mockProduct = {
         name: "",
         data: {
@@ -71,7 +71,7 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(400);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toContain("name is required");
           expect(res.body.errors.name.properties.path).toEqual("name");
@@ -81,7 +81,7 @@ describe("POST /product", () => {
         });
     });
 
-    it("data field is empty should response with code 403 ", async (done) => {
+    it("data field is empty should response with code 400 ", async (done) => {
       const mockProduct = {
         name: "test",
         data: {},
@@ -94,7 +94,7 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(400);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("data must not empty");
           expect(typeof res.body.message).toEqual("string");
@@ -103,7 +103,7 @@ describe("POST /product", () => {
         });
     });
 
-    it("data and name field is empty should response with code 403 ", async (done) => {
+    it("data and name field is empty should response with code 400 ", async (done) => {
       const mockProduct = {
         name: "",
         data: {},
@@ -116,7 +116,7 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(400);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("data and name must not empty");
           expect(typeof res.body.message).toEqual("string");
@@ -125,7 +125,7 @@ describe("POST /product", () => {
         });
     });
 
-    it("name field is less than 4 character should response with code 403 ", async (done) => {
+    it("name field is less than 4 character should response with code 400 ", async (done) => {
       const mockProduct = {
         name: "123",
         data: {
@@ -140,7 +140,7 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(400);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toContain("name is min 4 character");
           expect(typeof res.body.message).toEqual("string");
@@ -149,7 +149,7 @@ describe("POST /product", () => {
         });
     });
 
-    it("name field is less than 4 character should response with code 403 ", async (done) => {
+    it("request with invalid access token should response with code 401", async (done) => {
       const mockProduct = {
         name: "test",
         data: {
@@ -166,7 +166,7 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(401);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("Please login / register first");
           expect(typeof res.body.message).toEqual("string");
@@ -198,7 +198,7 @@ describe("PUT /product", () => {
         id = res.body._id;
         key = res.body.chain[1].key;
 
-        console.log(res.body.chain);
+        // console.log(res.body.chain);
 
         done();
       });
@@ -271,7 +271,7 @@ describe("PUT /product", () => {
           done();
         });
     });
-    it("error access_token is invalid should response with code 403", async (done) => {
+    it("error access_token is invalid should response with code 401", async (done) => {
       const mockData = {
         amount: 50,
         location: "Jakarta",
@@ -285,7 +285,7 @@ describe("PUT /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(401);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("Please login / register first");
           expect(typeof res.body.message).toEqual("string");
@@ -293,7 +293,7 @@ describe("PUT /product", () => {
           done();
         });
     });
-    it("error product not found should response with code 403", async (done) => {
+    it("error product not found should response with code 404", async (done) => {
       const mockData = {
         amount: 50,
         location: "Jakarta",
@@ -308,7 +308,7 @@ describe("PUT /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          expect(res.statusCode).toEqual(403);
+          expect(res.statusCode).toEqual(404);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("Product not found");
           expect(typeof res.body.message).toEqual("string");
