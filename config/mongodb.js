@@ -11,7 +11,6 @@ const connect = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(`mongo connected to ${MONGO_URI}`);
   } catch (err) {
     console.log(err);
   }
