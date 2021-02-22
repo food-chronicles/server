@@ -39,6 +39,7 @@ class Controller {
           data: block.data,
           location: block.location,
           image_url: block.image_url,
+          user: block.user
         };
       });
 
