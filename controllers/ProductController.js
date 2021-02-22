@@ -92,10 +92,10 @@ class Controller {
     }
   }
 
-  static async addBlock(req, res) {
+  static async addBlock(req, res, next) {
     try {
       if (Object.keys(req.body).length === 0) {
-        throw { type: "data must not empty" };
+        throw { name: "data must not empty" };
       }
       const { id } = req.params;
       const doc = await Product.findById(id);
@@ -120,14 +120,15 @@ class Controller {
             .exec();
           res.status(200).json({ message: `${result.n} doc has been updated` });
         } else {
+          console.log("test");
           throw { type: `You data has been compromised or altered` };
         }
       }
     } catch (err) {
-      if (err.type) {
-        res.status(403).json({ message: err.type });
+      if (err.name) {
+        return next({ name: "ProductValidationError" });
       } else {
-        res.status(500).json({ error: err });
+        return next(error);
       }
     }
   }

@@ -14,7 +14,6 @@ describe("POST /product", () => {
       .post("/login")
       .send(mockUser)
       .end((err, res) => {
-        // console.log("beforeall", res.body);
         access_token = res.body.access_token;
         done();
       });
@@ -24,9 +23,14 @@ describe("POST /product", () => {
     it("successfully create new blockchain should response with code 201", async (done) => {
       const mockProduct = {
         name: "Test product",
-        data: {
-          amount: 5,
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
         },
+        data: {
+          amount: 100,
+        },
+        image_url: "test_url",
       };
 
       request(app)
@@ -36,7 +40,6 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          key = res.body.chain[1].key;
           expect(res.statusCode).toEqual(201);
           expect(res.body).toHaveProperty("_id");
           expect(typeof res.body._id).toEqual("string");
@@ -59,9 +62,14 @@ describe("POST /product", () => {
     it("name field is empty should response with code 400", async (done) => {
       const mockProduct = {
         name: "",
-        data: {
-          amount: 5,
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
         },
+        data: {
+          amount: 100,
+        },
+        image_url: "test_url",
       };
 
       request(app)
@@ -83,8 +91,13 @@ describe("POST /product", () => {
 
     it("data field is empty should response with code 400 ", async (done) => {
       const mockProduct = {
-        name: "test",
+        name: "Test product",
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
+        },
         data: {},
+        image_url: "test_url",
       };
 
       request(app)
@@ -106,7 +119,12 @@ describe("POST /product", () => {
     it("data and name field is empty should response with code 400 ", async (done) => {
       const mockProduct = {
         name: "",
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
+        },
         data: {},
+        image_url: "test_url",
       };
 
       request(app)
@@ -128,9 +146,14 @@ describe("POST /product", () => {
     it("name field is less than 4 character should response with code 400 ", async (done) => {
       const mockProduct = {
         name: "123",
-        data: {
-          amount: 5,
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
         },
+        data: {
+          amount: 100,
+        },
+        image_url: "test_url",
       };
 
       request(app)
@@ -151,10 +174,15 @@ describe("POST /product", () => {
 
     it("request with invalid access token should response with code 401", async (done) => {
       const mockProduct = {
-        name: "test",
-        data: {
-          amount: 5,
+        name: "Test product",
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
         },
+        data: {
+          amount: 100,
+        },
+        image_url: "test_url",
       };
 
       const not_access_token =
@@ -183,9 +211,14 @@ describe("PUT /product", () => {
   beforeAll((done) => {
     const mockProduct = {
       name: "Test product",
-      data: {
-        amount: 5,
+      location: {
+        latitude: "-6.9197258999999995",
+        longitude: "107.56236159999999",
       },
+      data: {
+        amount: 100,
+      },
+      image_url: "test_url",
     };
 
     request(app)
@@ -206,8 +239,14 @@ describe("PUT /product", () => {
   describe("success add new block to blockchain", () => {
     it("success add new block should response with code 200", async (done) => {
       const mockData = {
-        amount: 50,
-        location: "Jakarta",
+        location: {
+          latitude: "-6.9197258999999995",
+          longitude: "107.56236159999999",
+        },
+        data: {
+          amount: 100,
+        },
+        image_url: "test_url",
       };
 
       request(app)
