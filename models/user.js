@@ -33,6 +33,7 @@ const userSchema = new Schema({
   },
   history: {
     type: Array,
+    default: [],
     required: "history is required",
   },
 });

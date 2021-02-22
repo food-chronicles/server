@@ -27,6 +27,7 @@ module.exports = (err, req, res, next) => {
     case "ValidationError":
       statusCode = 400;
       errorObj.message = err.message;
+      errorObj.name = err.name;
       errorObj.errors = err.errors;
       break;
 

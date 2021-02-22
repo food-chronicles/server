@@ -3,27 +3,19 @@ const { compare } = require("../helpers/hashPassword");
 const { tokenGenerate } = require("../helpers/jwt");
 
 class Controller {
-  static register(req, res) {
-    const {
-      email,
-      username,
-      password,
-      company_name,
-      category,
-      history,
-    } = req.body;
+  static register(req, res, next) {
+    const { email, username, password, company_name, category } = req.body;
     const user = new User({
       email,
       username,
       password,
       company_name,
       category,
-      history,
     });
     user
       .save()
-      .then((result) => {
-        const {
+      .then(
+        ({
           _id,
           email,
           username,
@@ -31,30 +23,31 @@ class Controller {
           company_name,
           category,
           history,
-        } = result;
-        const payload = {
-          _id,
-          username,
-        };
-        const access_token = tokenGenerate(payload);
-        const response = {
-          _id,
-          email,
-          username,
-          password,
-          company_name,
-          category,
-          history,
-          access_token,
-        };
-        res.status(201).json(response);
-      })
+        }) => {
+          const payload = {
+            _id,
+            username,
+          };
+          const access_token = tokenGenerate(payload);
+          const response = {
+            _id,
+            email,
+            username,
+            password,
+            company_name,
+            category,
+            history,
+            access_token,
+          };
+          res.status(201).json(response);
+        }
+      )
       .catch((err) => {
-        res.status(400).json(err);
+        next(err);
       });
   }
 
-  static login(req, res) {
+  static login(req, res, next) {
     const { username, password } = req.body;
     User.findOne({ username })
       .exec()
