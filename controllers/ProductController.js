@@ -54,7 +54,15 @@ class Controller {
       }
       let blockchain = new Blockchain();
       const { id } = req.headers.user;
-      await blockchain.addBlock(new Block(1, new Date(), req.body.data));
+      await blockchain.addBlock(
+        new Block(
+          1,
+          new Date(),
+          req.body.data,
+          req.body.location,
+          req.body.image_url
+        )
+      );
 
       const product = await Product.create({
         name: req.body.name,
@@ -91,6 +99,8 @@ class Controller {
             latestBlock.index + 1,
             new Date(),
             req.body.data,
+            req.body.location,
+            req.body.image_url,
             latestBlock.hash,
             randomize("Aa0", 12)
           );
