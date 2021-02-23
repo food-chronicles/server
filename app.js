@@ -1,5 +1,5 @@
-const env = process.env.NODE_ENV || "development";
-if (env === "development" || env === "test") require("dotenv").config();
+if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test")
+  require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");

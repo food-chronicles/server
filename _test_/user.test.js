@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("../app");
-const mongoose = require("mongoose");
 const { compare } = require("../helpers/hashPassword");
 
 describe("POST /register", () => {
@@ -264,6 +263,54 @@ describe("GET /user", () => {
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toEqual("Please login / register first");
           expect(typeof res.body.message).toEqual("string");
+
+          done();
+        });
+    });
+  });
+});
+
+describe("PUT /user", () => {
+  let access_token;
+
+  beforeAll(async (done) => {
+    const mockUser = {
+      username: "testSuccess-register",
+      password: "123456",
+    };
+
+    request(app)
+      .post("/login")
+      .send(mockUser)
+      .end((err, res) => {
+        if (err) done(err);
+        access_token = res.body.access_token;
+        done();
+      });
+  });
+  describe("success update user info", () => {
+    it("success update should response with code 200", async (done) => {
+      const mockUser = {
+        email: "test-success-update@food-chronicles.com",
+        username: "testSuccess-update",
+        password: "123456",
+        company_name: "Food Company",
+        category: "Producer",
+      };
+
+      request(app)
+        .put("/user")
+        .send(mockUser)
+        .set("access_token", access_token)
+        .end((err, res) => {
+          if (err) done(err);
+
+          expect(res.statusCode).toEqual(200);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toEqual("1 doc has been updated");
+          expect(res.body).toHaveProperty("updatedData");
+          expect(typeof res.body.updatedData).toEqual("object");
+          expect(res.body).toHaveProperty("access_token");
 
           done();
         });
