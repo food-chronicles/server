@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { getTransporter } = require("../config/mail");
+const { transporter } = require("../config/mail");
 
 const delay = (retryCount) =>
   new Promise((resolve) => setTimeout(resolve, 10 ** retryCount));
@@ -21,7 +21,7 @@ const retrySending = async (
 };
 
 const sendMail = (to, product, key) => {
-  return getTransporter().sendMail({
+  return transporter.sendMail({
     from: '"Food Chronicles" <no-reply@food-chornicles.com>', // sender address
     to: to,
     subject: `Key for ${product}`,
@@ -31,12 +31,7 @@ const sendMail = (to, product, key) => {
 };
 
 const sendKey = (to, product, key) => {
-  retrySending(to, product, key)
-    .then((result) => {
-      console.log("Message sent: %s", result.messageId);
-      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(result));
-    })
-    .catch(console.log);
+  retrySending(to, product, key).catch(console.log);
 };
 
 module.exports = { sendKey };

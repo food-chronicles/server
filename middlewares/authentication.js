@@ -13,6 +13,7 @@ const authentication = async (req, res, next) => {
         username: user.username,
         company_name: user.company_name,
         category: user.category,
+        email: user.email,
       };
       next();
     } else {
