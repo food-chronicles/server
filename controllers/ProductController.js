@@ -1,6 +1,5 @@
 const Product = require("../models/product");
 const User = require("../models/user");
-const mongoose = require("mongoose");
 const getLocation = require("../helpers/getLocation");
 const { Blockchain, Block, checkValid } = require("../blockchain/index");
 const { checkValidate } = require("../blockchain/checkValidate");
@@ -19,7 +18,19 @@ class Controller {
           product.name.toLowerCase().includes(searchFilter.toLowerCase())
         );
       });
-      res.status(200).json(products);
+      const userHistory = await Promise.all(
+        products.map(async (product, i) => {
+          const { _id, name, chain } = await Product.findById({
+            _id: product._id,
+          });
+          return {
+            _id,
+            name,
+            image_url: chain[chain.length - 1].image_url,
+          };
+        })
+      );
+      res.status(200).json(userHistory);
     } catch (err) {
       next(err);
     }
@@ -82,7 +93,15 @@ class Controller {
       const user = await User.findById(id).exec();
       await User.updateOne(
         { _id: id },
-        { history: [...user.history, { _id: product._id, name: product.name }] }
+        {
+          history: [
+            ...user.history,
+            {
+              _id: product._id,
+              name: product.name,
+            },
+          ],
+        }
       );
       sendKey(user.email, product.name, product.chain[1].key);
       res.status(201).json(product);
@@ -118,6 +137,20 @@ class Controller {
             randomize("Aa0", 12)
           );
           const newChain = [...doc.chain, newBlock];
+          const userId = req.headers.user.id;
+          const user = await User.findById(userId).exec();
+          await User.updateOne(
+            { _id: userId },
+            {
+              history: [
+                ...user.history,
+                {
+                  _id: doc._id,
+                  name: doc.name,
+                },
+              ],
+            }
+          );
           const result = await Product.where({ _id: doc._id })
             .updateOne({ chain: newChain })
             .exec();
