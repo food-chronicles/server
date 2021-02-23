@@ -7,10 +7,12 @@ const cors = require("cors");
 const router = require("./routers/index");
 const errorHandler = require("./middlewares/errorHandler");
 const mongodb = require("./config/mongodb");
+const { mailInit } = require("./config/mail");
 
 const app = express();
 
 mongodb.connect();
+mailInit();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
