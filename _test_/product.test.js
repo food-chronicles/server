@@ -231,8 +231,6 @@ describe("PUT /product", () => {
         id = res.body._id;
         key = res.body.chain[1].key;
 
-        // console.log(res.body.chain);
-
         done();
       });
   });
