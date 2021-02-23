@@ -5,6 +5,7 @@ const getLocation = require("../helpers/getLocation");
 const { Blockchain, Block, checkValid } = require("../blockchain/index");
 const { checkValidate } = require("../blockchain/checkValidate");
 const randomize = require("randomatic");
+const { sendKey } = require("../service/mail");
 
 class Controller {
   static async get(req, res, next) {
@@ -83,6 +84,7 @@ class Controller {
         { _id: id },
         { history: [...user.history, { _id: product._id, name: product.name }] }
       );
+      sendKey(user.email, product.name, product.chain[1].key);
       res.status(201).json(product);
     } catch (error) {
       if (Object.keys(req.body.data).length === 0 && !req.body.name) {
@@ -119,6 +121,7 @@ class Controller {
           const result = await Product.where({ _id: doc._id })
             .updateOne({ chain: newChain })
             .exec();
+          sendKey(req.headers.user.email, doc.name, newBlock.key);
           res.status(200).json({ message: `${result.n} doc has been updated` });
         } else {
           throw { type: `You data has been compromised or altered` };
