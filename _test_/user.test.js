@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("../app");
-const mongoose = require("mongoose");
 const { compare } = require("../helpers/hashPassword");
 
 describe("POST /register", () => {
@@ -276,7 +275,7 @@ describe("PUT /user", () => {
 
   beforeAll(async (done) => {
     const mockUser = {
-      username: "testUser",
+      username: "testSuccess-register",
       password: "123456",
     };
 
