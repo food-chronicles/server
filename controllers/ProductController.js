@@ -39,7 +39,7 @@ class Controller {
           data: block.data,
           location: block.location,
           image_url: block.image_url,
-          user: block.user
+          user: block.user,
         };
       });
 
@@ -121,7 +121,6 @@ class Controller {
             .exec();
           res.status(200).json({ message: `${result.n} doc has been updated` });
         } else {
-          console.log("test");
           throw { type: `You data has been compromised or altered` };
         }
       }
