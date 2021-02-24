@@ -2,11 +2,14 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Are you sure that what you eat is what you get? Find the truth in our app. Our app implements blockchain technology to track the origins of your food and with immutable database ensure that your food is not compromised.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node bin/http.js",
     "dev": "NODE_ENV=development npx nodemon bin/http.js",
     "test": "NODE_ENV=test npx jest --collectCoverage --detectOpenHandles"
+  },
+  "nodemonConfig": {
+    "ignore": ["coverage/*", "_test_/*", "globalConfig.json"]
   },
   "repository": {
     "type": "git",
