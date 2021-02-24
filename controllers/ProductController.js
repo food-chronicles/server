@@ -104,7 +104,7 @@ class Controller {
           ],
         }
       );
-      sendKey(user.email, product.name, product.chain[1].key);
+      sendKey(user, product, product.chain[1].key);
       res.status(201).json(product);
     } catch (error) {
       if (Object.keys(req.body.data).length === 0 && !req.body.name) {
@@ -146,7 +146,7 @@ class Controller {
           const result = await Product.where({ _id: doc._id })
             .updateOne({ chain: newChain })
             .exec();
-          sendKey(req.headers.user.email, doc.name, newBlock.key);
+          sendKey(user, doc, newBlock.key);
           if (!productInHistory)
             await User.updateOne(
               { _id: userId },
