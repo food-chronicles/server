@@ -28,6 +28,10 @@ describe("GET /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
+          console.log(access_token);
+
+          console.log(res.body);
+
           expect(res.statusCode).toEqual(200);
           expect(typeof res.body).toEqual("object");
           expect(Array.isArray(res.body)).toEqual(true);

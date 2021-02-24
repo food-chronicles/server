@@ -20,13 +20,14 @@ class Controller {
       });
       const userHistory = await Promise.all(
         products.map(async (product, i) => {
-          const { _id, name, chain } = await Product.findById({
+          const productData = await Product.findById({
             _id: product._id,
           });
           return {
-            _id,
-            name,
-            image_url: chain[chain.length - 1].image_url,
+            _id: productData._id,
+            name: productData.name,
+            image_url:
+              productData.chain[productData.chain.length - 1].image_url,
           };
         })
       );
@@ -139,22 +140,26 @@ class Controller {
           const newChain = [...doc.chain, newBlock];
           const userId = req.headers.user.id;
           const user = await User.findById(userId).exec();
-          await User.updateOne(
-            { _id: userId },
-            {
-              history: [
-                ...user.history,
-                {
-                  _id: doc._id,
-                  name: doc.name,
-                },
-              ],
-            }
+          const productInHistory = user.history.find(
+            (product) => product._id == id
           );
           const result = await Product.where({ _id: doc._id })
             .updateOne({ chain: newChain })
             .exec();
           sendKey(req.headers.user.email, doc.name, newBlock.key);
+          if (!productInHistory)
+            await User.updateOne(
+              { _id: userId },
+              {
+                history: [
+                  ...user.history,
+                  {
+                    _id: doc._id,
+                    name: doc.name,
+                  },
+                ],
+              }
+            );
           res.status(200).json({ message: `${result.n} doc has been updated` });
         } else {
           throw { type: `You data has been compromised or altered` };
