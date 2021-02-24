@@ -18,15 +18,18 @@ class Controller {
           product.name.toLowerCase().includes(searchFilter.toLowerCase())
         );
       });
+      console.log(products, "products");
       const userHistory = await Promise.all(
         products.map(async (product, i) => {
-          const { _id, name, chain } = await Product.findById({
+          const productData = await Product.findById({
             _id: product._id,
           });
+          console.log(productData);
           return {
-            _id,
-            name,
-            image_url: chain[chain.length - 1].image_url,
+            _id: productData._id,
+            name: productData.name,
+            image_url:
+              productData.chain[productData.chain.length - 1].image_url,
           };
         })
       );
