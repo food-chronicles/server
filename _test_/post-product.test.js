@@ -79,8 +79,6 @@ describe("POST /product", () => {
         .end((err, res) => {
           if (err) done(err);
 
-          console.log(res.body);
-
           expect(res.statusCode).toEqual(400);
           expect(res.body).toHaveProperty("message");
           expect(res.body.message).toContain("name is required");
