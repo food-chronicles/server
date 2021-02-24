@@ -64,9 +64,7 @@ class Controller {
           return next({ name: "InvalidLogin" });
         }
       })
-      .catch((err) => {
-        return next(err);
-      });
+      .catch(next);
   }
 
   static async getUserInfo(req, res, next) {
@@ -81,6 +79,39 @@ class Controller {
       } = await User.findById(id);
 
       res.status(200).json({ _id, email, username, company_name, category });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async updateUserInfo(req, res, next) {
+    try {
+      const { id } = req.headers.user;
+      const { email, username, company_name, category } = req.body;
+      const result = await User.where({ _id: id })
+        .updateOne({
+          email,
+          username,
+          company_name,
+          category,
+        })
+        .exec();
+      const payload = {
+        id,
+        username,
+      };
+      const access_token = tokenGenerate(payload);
+      res.status(200).json({
+        message: `${result.n} doc has been updated`,
+        updatedData: {
+          id,
+          email,
+          username,
+          company_name,
+          category,
+        },
+        access_token,
+      });
     } catch (err) {
       next(err);
     }

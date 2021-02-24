@@ -6,11 +6,14 @@ const authentication = async (req, res, next) => {
     const decoded = checkToken(req.headers.access_token);
     const username = decoded.username;
     const user = await User.findOne({ username }).exec();
-    
+
     if (user) {
       req.headers.user = {
         id: user.id,
         username: user.username,
+        company_name: user.company_name,
+        category: user.category,
+        email: user.email,
       };
       next();
     } else {
