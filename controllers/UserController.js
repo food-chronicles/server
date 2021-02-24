@@ -64,9 +64,7 @@ class Controller {
           return next({ name: "InvalidLogin" });
         }
       })
-      .catch((err) => {
-        return next(err);
-      });
+      .catch(next);
   }
 
   static async getUserInfo(req, res, next) {
