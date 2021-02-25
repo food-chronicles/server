@@ -16,7 +16,6 @@ function checkValidate(doc) {
     } = currentBlock;
 
     if (currentBlock.previousHash !== previousBlock.hash) {
-      console.log(currentBlock.previousHash !== previousBlock.hash, user);
       return false;
     } else if (
       currentBlock.hash !==
