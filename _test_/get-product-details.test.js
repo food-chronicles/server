@@ -27,6 +27,21 @@ describe("GET /product/:id", () => {
   describe("failed to get product details", () => {
     it("should return 404 not found for invalid product id", async (done) => {
       request(app)
+        .get("/product/602c5b7467c504693aa66004")
+        .end((err, res) => {
+          if (err) done(err);
+
+          expect(res.statusCode).toEqual(404);
+          expect(typeof res.body).toEqual("object");
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toEqual("Product not found");
+
+          done();
+        });
+    });
+
+    it("should return 404 not found for invalid product id", async (done) => {
+      request(app)
         .get("/product/random")
         .end((err, res) => {
           if (err) done(err);
