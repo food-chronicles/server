@@ -188,6 +188,25 @@ describe("POST /login", () => {
           done();
         });
     });
+
+    it("password is wrong 400", async (done) => {
+      const mockUser = {
+        username: "testUser",
+        password: "not 1234",
+      };
+      request(app)
+        .post("/login")
+        .send(mockUser)
+        .end((err, res) => {
+          if (err) done(err);
+
+          expect(res.statusCode).toEqual(400);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toEqual("Invalid Username or Password");
+
+          done();
+        });
+    });
   });
 });
 

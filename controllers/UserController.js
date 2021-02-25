@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const { compare } = require("../helpers/hashPassword");
 const { tokenGenerate } = require("../helpers/jwt");
+const { sendRegisterMail } = require("../service/mail");
 
 class Controller {
   static register(req, res, next) {
@@ -39,6 +40,7 @@ class Controller {
             history,
             access_token,
           };
+          sendRegisterMail(user);
           res.status(201).json(response);
         }
       )

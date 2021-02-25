@@ -62,8 +62,7 @@ class Controller {
         chain: productDataChain,
       });
     } catch (err) {
-      if (err.name === "CastError") return next({ name: "ProductNotFound" });
-      return next(err);
+      return next({ name: "ProductNotFound" });
     }
   }
 
@@ -166,11 +165,7 @@ class Controller {
         }
       }
     } catch (err) {
-      if (err.name) {
-        return next({ name: "ProductValidationError" });
-      } else {
-        return next(error);
-      }
+      return next(err);
     }
   }
 }
