@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
+const { checkValidate } = require("../blockchain/checkValidate");
 
 let access_token;
 
@@ -162,6 +163,124 @@ describe("PUT /product", () => {
 
           done();
         });
+    });
+    it("request with compromised or altered data", async (done) => {
+      const mockProduct = {
+        chain: [
+          {
+            index: 0,
+            timestamp: {
+              $date: "2021-02-24T07:37:07.822Z",
+            },
+            key: null,
+            location: "0",
+            image_url: "Genesis block",
+            user: "Genesis block",
+            data: "Genesis block",
+            previousHash: "0",
+            hash:
+              "40d9b4ef5b169ba4aed6c183f4af22430582f171b3b20f31860d8e1d2d4b8a1f",
+            nonce: 0,
+          },
+          {
+            index: 1,
+            timestamp: {
+              $date: "2021-02-24T07:37:08.501Z",
+            },
+            key: "68k3BaRrDjh6",
+            location: {
+              latitude: -6.918853,
+              longitude: 107.563378,
+              city: "Cimahi",
+              region: "West Java",
+              country: "Indonesia",
+            },
+            image_url: "test_url1",
+            user: {
+              id: "603601f2c0e3e61b687ff6c9",
+              username: "test20",
+              company_name: "test",
+              category: "Producer",
+              email: "test3@mail.com",
+            },
+            data: {
+              amount: 100,
+            },
+            previousHash:
+              "40d9b4ef5b169ba4aed6c183f4af22430582f171b3b20f31860d8e1d2d4b8a1f",
+            hash:
+              "3c8dadf4603ae55b05c123c2433dd7b66e1b6619b7d1b1efa1a7c26342915fcd",
+            nonce: 0,
+          },
+        ],
+        name: "test product",
+        __v: 0,
+      };
+
+      const validateStatus = checkValidate(mockProduct);
+
+      expect(validateStatus).toBe(false);
+
+      done();
+    });
+    it("request with hash is not match", async (done) => {
+      const mockProduct = {
+        chain: [
+          {
+            index: 0,
+            timestamp: {
+              $date: "2021-02-24T07:37:07.822Z",
+            },
+            key: null,
+            location: "0",
+            image_url: "Genesis block",
+            user: "Genesis block",
+            data: "Genesis block",
+            previousHash: "0",
+            hash:
+              "40d9b4ef5b169ba4aed6c183f4af22430582f171b3b20f31860d8e1d2d4b8a1f",
+            nonce: 0,
+          },
+          {
+            index: 1,
+            timestamp: {
+              $date: "2021-02-24T07:37:08.501Z",
+            },
+            key: "68k3BaRrDjh6",
+            location: {
+              latitude: -6.918853,
+              longitude: 107.563378,
+              city: "Cimahi",
+              region: "West Java",
+              country: "Indonesia",
+            },
+            image_url: "test_url1",
+            user: {
+              id: "603601f2c0e3e61b687ff6c9",
+              username: "test3",
+              company_name: "test",
+              category: "Producer",
+              email: "test3@mail.com",
+            },
+            data: {
+              amount: 100,
+            },
+            previousHash:
+              "3c8dadf4603ae55b05c123c2433dd7b66e1b6619b7d1b1efa1a7c26342915fcd",
+            hash:
+              "3c8dadf4603ae55b05c123c2433dd7b66e1b6619b7d1b1efa1a7c26342915fcd",
+            nonce: 0,
+          },
+        ],
+        name: "test product",
+        __v: 0,
+      };
+
+      const validateStatus = checkValidate(mockProduct);
+
+      expect(validateStatus).toBe(false);
+
+      done();
     });
   });
 });
